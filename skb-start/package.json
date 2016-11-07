@@ -18,5 +18,9 @@
   "homepage": "https://github.com/Legrank/SkillBranch#readme",
   "dependencies": {
     "skb": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0"
   }
 }
