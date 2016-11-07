@@ -1,0 +1,6 @@
+*.zip
+*.log
+*.pdf
+*.xls
+/skb-start/nbproject/
+/skb-start/node_modules/
