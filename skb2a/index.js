@@ -5,22 +5,22 @@ const app = express();
 app.use(cors());
 app.get('/fullname', (req, res) => {
     function fullname(){
-     const myRe = /\S+/g;
-     if (!req.query.fullname || /[\d_/\\]/.test(req.query.fullname)) {
-       return "Invalid fullname";
-     }
-     const nameArray = req.query.fullname.match(myRe);
-     if ((nameArray == null) || (nameArray.length>3)) {
-       return "Invalid fullname";
-     }
-     const fullnameTemp = nameArray.pop();
-     let fullname = fullnameTemp[0].toUpperCase()+fullnameTemp.slice(1).toLowerCase();
-     for (let i = 0; i < nameArray.length; i++) {
-       fullname += " "+nameArray[i][0].toUpperCase()+'.';
-     }
-     return fullname;
-   }
-   res.send(fullname());
+       const myRe = /\S+/g;
+       if (!req.query.fullname || /[\d_/\\]/.test(req.query.fullname)) {
+         return "Invalid fullname";
+       }
+       const nameArray = req.query.fullname.match(myRe);
+       if ((nameArray == null) || (nameArray.length>3)) {
+         return "Invalid fullname";
+       }
+       let fullname = nameArray.pop();
+       fullname = fullname[0].toUpperCase()+fullname.slice(1).toLowerCase();
+       for (let i = 0; i < nameArray.length; i++) {
+         fullname += " "+nameArray[i][0].toUpperCase()+'.';
+       }
+       return fullname;
+    }
+    res.send(fullname());
 });
 app.get('/', (req, res) => {
     const sum = (+req.query.a || 0) + (+req.query.b || 0);
