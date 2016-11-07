@@ -1,0 +1,36 @@
+{
+  "name": "skb2a",
+  "version": "1.0.0",
+  "author": "Dima",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "main": "index.js",
+  "babel": {
+    "presets": [
+      "latest",
+      "stage-0"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
+  },
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-runtime": "^6.11.6",
+    "cors": "^2.8.1",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-core": "^6.17.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.16.3",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node -- index.js"
+  }
+}
