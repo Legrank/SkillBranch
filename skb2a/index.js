@@ -23,7 +23,22 @@ function fullname(){
     }
     res.send(fullname());
 });
-app.get('/', (req, res) => {
+
+app.get('/username', (req, res) => {
+    function fullname(){
+        const query = req.query.username ? req.query.username : '';
+        const myRe = /^(?:https?\:)?\@*(?:(?:\/\/)?.*?\/)?\@*(.*?)(?:(?:\?|\/).*)?$/;
+        const nameArray = query.match(myRe);
+        if (nameArray == null) {
+            return "Invalid username";
+        }
+        const username = `@${nameArray[1]}`;
+        return username;
+    }
+    res.send(fullname());
+});
+
+app.get('/sum', (req, res) => {
     const sum = (+req.query.a || 0) + (+req.query.b || 0);
     res.send(sum.toString());
 });
