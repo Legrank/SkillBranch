@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 const j = '{"board":{"vendor":"IBM","model":"IBM-PC S-100","cpu":{"model":"80286","hz":12000},"image":"http://www.s100computers.com/My%20System%20Pages/80286%20Board/Picture%20of%2080286%20V2%20BoardJPG.jpg","video":"http://www.s100computers.com/My%20System%20Pages/80286%20Board/80286-Demo3.mp4"},"ram":{"vendor":"CTS","volume":1048576,"pins":30},"os":"MS-DOS 1.25","floppy":0,"hdd":[{"vendor":"Samsung","size":33554432,"volume":"C:"},{"vendor":"Maxtor","size":16777216,"volume":"D:"},{"vendor":"Maxtor","size":8388608,"volume":"C:"}],"monitor":null}';
 const json = JSON.parse(j);
-app.get('/fullname', (req, res) => {
+app.get('/2B', (req, res) => {
 function fullname(){
         const query = req.query.fullname;
         if (!query || /[\d_/]/.test(query)) {
@@ -27,7 +27,7 @@ function fullname(){
     res.send(fullname());
 });
 
-app.get('/username', (req, res) => {
+app.get('/2C', (req, res) => {
     function fullname(){
         const query = req.query.username ? req.query.username : '';
         const myRe = /^(?:https?\:)?\@*(?:(?:\/\/)?.*?\/)?\@*(.*?)(?:(?:\?|\/).*)?$/;
@@ -41,7 +41,7 @@ app.get('/username', (req, res) => {
     res.send(fullname());
 });
 
-app.get('/sum', (req, res) => {
+app.get('/2A', (req, res) => {
     const sum = (+req.query.a || 0) + (+req.query.b || 0);
     res.send(sum.toString());
 });
