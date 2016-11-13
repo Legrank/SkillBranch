@@ -1,9 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import fetch from  'isomorphic-fetch';
+import _ from 'lodash';
 
 const app = express();
 app.use(cors());
+
+app.get(/^\/test.*/, async (req, res) => {
+    const path = req.path.split("/");
+    console.log(path);
+    res.send("test");
+})
+
 app.get('/2B', (req, res) => {
 function fullname(){
         const query = req.query.fullname;
@@ -45,17 +53,16 @@ app.get('/2A', (req, res) => {
 });
 
 const pcUrl = 'https://gist.githubusercontent.com/isuvorov/ce6b8d87983611482aac89f6d7bc0037/raw/pc.json';
-
 let json = {};
 fetch(pcUrl)
-    .then(async (res) => {
-        json = await res.json();
-    })
-    .catch(err => {
-        console.log('Чтото пошло не так:', err);
-    });
+   .then(async (res) => {
+            json = await res.json();
+        })
+        .catch(err => {
+            console.log('Чтото пошло не так:', err);
+   });
 
-app.get('/3A',async function(req, res) {
+app.get('/', function(req, res) {
     res.send(json);
 });
 
@@ -79,24 +86,30 @@ app.get('/3A/volumes', function(req, res) {
     res.send(hddJson);
 });
 
-app.get('/3A/:id1?/:id2?/:id3?', function(req, res) {
-    const id1 = req.params.id1 ? req.params.id1 : '';
-    const id2 = req.params.id2 ? req.params.id2 : '';
-    const id3 = req.params.id3 ? req.params.id3 : '';
-    const idArr = [id1,id2,id3];
+app.get(/^\/3A.*/i, function(req, res) {
+    const idArr = req.path.match(/[^\/]+/g);
+    console.log(idArr);
     let id = json;
-    for (let i = 0; idArr.length>i; i++){
-        if (idArr[i] && id !== undefined) {
-            id = id[idArr[i]];
+    for (let i = 1; idArr.length>i; i++){ //перебор со 2-го элемента, т.к. в 1-м корневой роут
+        let update = false;
+        _.forOwn(id, function(value, key) {
+            if (key == idArr[i]){
+                id = id[idArr[i]];
+                update = true;
+            }
+        });
+        if (!update) {
+            id = undefined;
         }
     }
-    console.log("Запрос ",idArr,"Ответ: ",id)
+    console.log("Запрос ",idArr,"Ответ: ",id);
     if (id === undefined){
-        res.status(404).send("Not found");
+        res.status(404).send("Not Found");
     }else{
         res.json(id);
     }
 });
+
 
 app.listen(3000, () => {
     console.log('Your app listening on port 3000!');
