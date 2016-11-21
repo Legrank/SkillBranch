@@ -2,15 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import fetch from  'isomorphic-fetch';
 import _ from 'lodash';
+import colorcolor from 'colorcolor';
 
 const app = express();
 app.use(cors());
-
-app.get(/^\/test.*/, async (req, res) => {
-    const path = req.path.split("/");
-    console.log(path);
-    res.send("test");
-})
 
 app.get('/2B', (req, res) => {
 function fullname(){
@@ -52,6 +47,47 @@ app.get('/2A', (req, res) => {
     res.send(sum.toString());
 });
 
+app.get('/2D', (req, res) => {
+    //console.log((!/[^0-9a-f#]/i.test("#ababab") && /^#/.test("#ababab")));
+    console.log(req.query);
+    function canonazeColor() {
+        if (req.query.color){
+            const color = req.query.color.replace(/\s+/g, "");
+            console.log(color);
+            if (!/[^0-9a-f#]/i.test(color) && /^#/.test(color) && (color.length == 4 || color.length == 7)){
+                console.log('#123456');
+                return color;
+            }
+            if (!/[^0-9a-f]/i.test(color) && (color.length == 3 || color.length == 6)) {
+                console.log("123456");
+                return `#${color}`;
+            }
+            if (/^rgb/.test(color)) {
+                console.log("rgb");
+                const rgbArr = color.match(/[0-9]+/g);
+                if (rgbArr.length == 3 && rgbArr[0] < 256 && rgbArr[1] < 256 && rgbArr[2] < 256) {
+                    return color;
+                }
+            }
+            const colorTmp = color.replace(/%20/g,"");
+            if (/^hsl\([0-9]{1,3},[0-9]{1,3}%,[0-9]{1,3}%\)$/.test(colorTmp)) {
+                const rgbArr = colorTmp.match(/[0-9]+/g);
+                console.log("hsl ",colorTmp);
+                if (rgbArr.length == 3 && rgbArr[0] < 361 && rgbArr[1] < 101 && rgbArr[2] < 101) {
+                    return colorTmp;
+                }
+            }
+        }
+       return false;
+    }
+    const color = canonazeColor();
+    if (color){
+        res.send(colorcolor(color, "hex"));
+    }else{
+        res.send("Invalid color");
+    }
+});
+
 const pcUrl = 'https://gist.githubusercontent.com/isuvorov/ce6b8d87983611482aac89f6d7bc0037/raw/pc.json';
 let json = {};
 fetch(pcUrl)
@@ -65,6 +101,8 @@ fetch(pcUrl)
 app.get('/', function(req, res) {
     res.send(json);
 });
+
+
 
 app.get('/3A/volumes', function(req, res) {
     const hddArr = {};
@@ -88,7 +126,6 @@ app.get('/3A/volumes', function(req, res) {
 
 app.get(/^\/3A.*/i, function(req, res) {
     const idArr = req.path.match(/[^\/]+/g);
-    console.log(idArr);
     let id = json;
     for (let i = 1; idArr.length>i; i++){ //перебор со 2-го элемента, т.к. в 1-м корневой роут
         let update = false;
