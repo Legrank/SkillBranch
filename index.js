@@ -4,8 +4,11 @@ import fetch from  'isomorphic-fetch';
 import _ from 'lodash';
 import colorcolor from 'colorcolor';
 
+import skb3B from  './router/skb3B';
+
 const app = express();
 app.use(cors());
+app.use('/3B', skb3B);
 
 app.get('/2B', (req, res) => {
 function fullname(){
