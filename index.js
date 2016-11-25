@@ -6,11 +6,13 @@ import colorcolor from 'colorcolor';
 
 import skb3B from  './router/skb3B';
 import skb2X from  './router/skb2X';
+import skb3C from  './router/skb3C';
 
 const app = express();
 app.use(cors());
 app.use('/3B', skb3B);
 app.use('/2X', skb2X);
+app.use('/3C', skb3C);
 
 app.get('/2B', (req, res) => {
 function fullname(){
